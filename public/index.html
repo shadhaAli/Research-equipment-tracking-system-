@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EquipUse — Research Equipment Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script>
+  // Applied before paint so there's no flash of the wrong theme/language.
+  (function(){
+    try{
+      var theme = localStorage.getItem('equipuse_theme') || 'light';
+      var lang = localStorage.getItem('equipuse_lang') || 'en';
+      document.documentElement.setAttribute('data-theme', theme);
+      document.documentElement.setAttribute('lang', lang);
+      document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+    }catch(e){}
+  })();
+</script>
+</head>
+<body>
+
+<!-- ============ LOGIN ============ -->
+<div id="screen-login">
+  <div class="signout-card">
+    <div class="login-topbar">
+      <div class="lang-toggle" id="login-lang-toggle">
+        <div class="lang-opt" data-lang="en" onclick="setLanguage('en')">EN</div>
+        <div class="lang-opt" data-lang="ar" onclick="setLanguage('ar')">AR</div>
+      </div>
+      <button class="icon-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+        <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z"/></svg>
+      </button>
+    </div>
+    <div class="card-stub">
+      <div class="brand">
+        <div class="brand-mark">E</div>
+        <div>
+          <div class="brand-name">EQUIPUSE</div>
+          <div class="brand-sub" data-i18n="login.brand_sub">Research equipment sign-out &amp; tracking</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <p class="card-title" data-i18n="login.card_title">// Sign the checkout card</p>
+      <div class="field">
+        <label for="in-username" data-i18n="login.field_username">Username</label>
+        <input id="in-username" type="text" data-i18n-placeholder="login.field_username_ph" placeholder="e.g. layla.h" autocomplete="username">
+      </div>
+      <div class="field">
+        <label for="in-password" data-i18n="login.field_password">Password</label>
+        <input id="in-password" type="password" data-i18n-placeholder="login.field_password_ph" placeholder="Choose or enter a password" autocomplete="current-password" onkeydown="if(event.key==='Enter') handleLogin()">
+      </div>
+      <div class="field">
+        <label data-i18n="login.field_role">Signing in as</label>
+        <div class="role-toggle">
+          <div class="role-opt active" data-role="Researcher" onclick="selectRole(this)" data-i18n="login.role_researcher">Researcher</div>
+          <div class="role-opt" data-role="Manager" onclick="selectRole(this)" data-i18n="login.role_manager">Lab Manager</div>
+        </div>
+      </div>
+      <button class="btn btn-primary" style="width:100%; padding:11px;" onclick="handleLogin()" data-i18n="login.submit">Sign out card &amp; enter →</button>
+      <div class="signature-line" data-i18n="login.hint">New username? It's created automatically. Returning? Use the same password — this is a local demo account, not a secure login.</div>
+
+      <div class="quick-picks" id="quick-picks" style="display:none;">
+        <p class="eyebrow" data-i18n="login.quick_picks_title">// Or pick up an existing card</p>
+        <div id="quick-picks-list"></div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <div class="hint" data-i18n="login.card_stock">Card stock #EQ-2026 · SQU demo instance</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ APP ============ -->
+<div id="screen-app">
+  <div class="topbar">
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div class="brand-mark" style="width:24px;height:24px;border-color:var(--ink);color:var(--ink);font-size:11px;">E</div>
+      <strong class="mono" style="font-size:13px;">EQUIPUSE</strong>
+    </div>
+    <div class="tabs" id="topbar-tabs"></div>
+    <button class="icon-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+      <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z"/></svg>
+    </button>
+  </div>
+
+  <div class="sidebar">
+    <div class="side-brand">
+      <div class="brand-mark">E</div>
+      <div>
+        <div class="brand-name">EQUIPUSE</div>
+        <div class="brand-sub">SQU · Equipment Registry</div>
+      </div>
+    </div>
+    <div id="sidebar-tabs"></div>
+    <div class="side-foot">
+      <div class="id-card">
+        <div class="name" id="id-name">—</div>
+        <div class="role" id="id-role">—</div>
+      </div>
+      <div class="side-toggles">
+        <button class="icon-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z"/></svg>
+        </button>
+        <div class="lang-toggle">
+          <div class="lang-opt" data-lang="en" onclick="setLanguage('en')">EN</div>
+          <div class="lang-opt" data-lang="ar" onclick="setLanguage('ar')">AR</div>
+        </div>
+      </div>
+      <button class="signout-link" onclick="signOut()" data-i18n="common.sign_out">↺ Sign out</button>
+    </div>
+  </div>
+
+  <div class="main">
+
+    <!-- DASHBOARD -->
+    <div class="view" id="view-dashboard">
+      <div class="view-head">
+        <p class="eyebrow" data-i18n="dash.eyebrow">// 01 · Overview</p>
+        <h1 id="dash-greeting">Welcome back</h1>
+        <p data-i18n="dash.sub">Live status of every instrument SQU owns, and what's moved this term.</p>
+      </div>
+      <div class="kpi-grid" id="kpi-grid"></div>
+      <div class="grid-2" style="margin-bottom:16px;">
+        <div class="panel panel-perf">
+          <div class="panel-pad">
+            <h3 data-i18n="dash.chart_dept_title">Equipment by department</h3>
+            <p class="sub" data-i18n="dash.chart_dept_sub">Total registered items per college</p>
+            <div id="chart-dept" style="margin-top:10px;"></div>
+          </div>
+        </div>
+        <div class="panel panel-perf">
+          <div class="panel-pad">
+            <h3 data-i18n="dash.chart_status_title">Status breakdown</h3>
+            <p class="sub" data-i18n="dash.chart_status_sub">Across the full registry</p>
+            <div style="display:flex; align-items:center; gap:18px; margin-top:10px;">
+              <div style="width:150px; flex-shrink:0;" id="chart-status"></div>
+              <div class="legend" id="legend-status"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="panel panel-perf">
+          <div class="panel-pad">
+            <h3 data-i18n="dash.chart_trend_title">Checkouts, last 6 months</h3>
+            <p class="sub" data-i18n="dash.chart_trend_sub">Approved sign-outs across all departments</p>
+            <div id="chart-trend" style="margin-top:10px;"></div>
+          </div>
+        </div>
+        <div class="panel panel-perf">
+          <div class="panel-pad">
+            <h3 data-i18n="dash.activity_title">Recent activity</h3>
+            <p class="sub" data-i18n="dash.activity_sub">What's moved on the registry</p>
+            <div id="activity-feed" style="margin-top:6px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INVENTORY -->
+    <div class="view" id="view-inventory">
+      <div class="view-head">
+        <p class="eyebrow" data-i18n="inv.eyebrow">// 02 · Registry</p>
+        <h1 data-i18n="inv.title">Inventory</h1>
+        <p data-i18n="inv.sub">Search everything SQU owns before requesting something new.</p>
+      </div>
+      <div class="toolbar">
+        <input type="search" id="inv-search" data-i18n-placeholder="inv.search_ph" placeholder="Search by name, category, tag, or location…" oninput="renderInventory()">
+        <select id="inv-dept" onchange="renderInventory()">
+          <option value="" data-i18n="inv.all_departments">All departments</option>
+        </select>
+        <select id="inv-status" onchange="renderInventory()">
+          <option value="" data-i18n="inv.all_statuses">All statuses</option>
+          <option data-i18n="status.available">Available</option>
+          <option data-i18n="status.inuse">In Use</option>
+          <option data-i18n="status.maintenance">Maintenance</option>
+          <option data-i18n="status.retired">Retired</option>
+        </select>
+      </div>
+      <div class="eq-grid" id="eq-grid"></div>
+    </div>
+
+    <!-- REQUESTS -->
+    <div class="view" id="view-requests">
+      <div class="view-head">
+        <p class="eyebrow" data-i18n="req.eyebrow">// 03 · Checkouts</p>
+        <h1 id="req-title">Requests</h1>
+        <p id="req-sub">Track what's been asked for, and what's waiting on you.</p>
+      </div>
+      <div class="panel panel-perf">
+        <div class="panel-pad" style="padding-top:10px;">
+          <div style="overflow-x:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th data-i18n="req.col_item">Item</th><th data-i18n="req.col_by">Requested by</th>
+                  <th data-i18n="req.col_purpose">Purpose</th><th data-i18n="req.col_status">Status</th>
+                  <th data-i18n="req.col_submitted">Submitted</th><th></th>
+                </tr>
+              </thead>
+              <tbody id="requests-body"></tbody>
+            </table>
+          </div>
+          <div class="empty-state" id="requests-empty" style="display:none;">
+            <p class="eyebrow" data-i18n="req.empty_title">// nothing here yet</p>
+            <p data-i18n="req.empty_sub">No requests to show. Head to Inventory to check something out.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOOKINGS -->
+    <div class="view" id="view-bookings">
+      <div class="view-head">
+        <p class="eyebrow" data-i18n="bk.eyebrow">// 04 · Schedule</p>
+        <h1 data-i18n="bk.title">Bookings</h1>
+        <p data-i18n="bk.sub">Reserve a future time slot, even on equipment that's busy right now.</p>
+      </div>
+      <div class="panel panel-perf">
+        <div class="panel-pad" style="padding-top:10px;">
+          <div style="overflow-x:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th data-i18n="bk.col_item">Item</th><th data-i18n="bk.col_by">Booked by</th>
+                  <th data-i18n="bk.col_when">When</th><th data-i18n="bk.col_purpose">Purpose</th>
+                  <th data-i18n="bk.col_status">Status</th><th></th>
+                </tr>
+              </thead>
+              <tbody id="bookings-body"></tbody>
+            </table>
+          </div>
+          <div class="empty-state" id="bookings-empty" style="display:none;">
+            <p class="eyebrow" data-i18n="bk.empty_title">// nothing scheduled</p>
+            <p data-i18n="bk.empty_sub">No bookings yet. Reserve a slot from any item in Inventory.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ISSUES -->
+    <div class="view" id="view-issues">
+      <div class="view-head">
+        <p class="eyebrow" data-i18n="is.eyebrow">// 05 · Faults</p>
+        <h1 data-i18n="is.title">Issue reports</h1>
+        <p data-i18n="is.sub">Flag a problem with an item — critical reports take it out of service automatically.</p>
+      </div>
+      <div class="panel panel-perf">
+        <div class="panel-pad" style="padding-top:10px;">
+          <div style="overflow-x:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th data-i18n="is.col_item">Item</th><th data-i18n="is.col_by">Reported by</th>
+                  <th data-i18n="is.col_severity">Severity</th><th data-i18n="is.col_description">Description</th>
+                  <th data-i18n="is.col_status">Status</th><th></th>
+                </tr>
+              </thead>
+              <tbody id="issues-body"></tbody>
+            </table>
+          </div>
+          <div class="empty-state" id="issues-empty" style="display:none;">
+            <p class="eyebrow" data-i18n="is.empty_title">// nothing reported</p>
+            <p data-i18n="is.empty_sub">No open issues. Report one from any item in Inventory.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REPORTS -->
+    <div class="view" id="view-reports">
+      <div class="view-head">
+        <p class="eyebrow" data-i18n="rep.eyebrow">// 06 · Insights</p>
+        <h1 data-i18n="rep.title">Reports</h1>
+        <p data-i18n="rep.sub">Where equipment sits idle, and what departments are actually asking for.</p>
+      </div>
+      <div class="grid-2">
+        <div class="panel panel-perf">
+          <div class="panel-pad">
+            <h3 data-i18n="rep.idle_title">Idle 90+ days — candidates to reassign</h3>
+            <p class="sub" data-i18n="rep.idle_sub">Sorted by longest since last checkout</p>
+            <div id="idle-list" style="margin-top:8px;"></div>
+          </div>
+        </div>
+        <div class="panel panel-perf">
+          <div class="panel-pad">
+            <h3 data-i18n="rep.ranked_title">Most requested, this term</h3>
+            <p class="sub" data-i18n="rep.ranked_sub">Ranked by number of checkout requests logged</p>
+            <div id="most-requested" style="margin-top:8px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============ MODAL: REQUEST ============ -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-head">
+      <div>
+        <h3 data-i18n="modal.request_title">Request equipment</h3>
+        <p class="sub mono" id="modal-item-name" style="margin:4px 0 0; font-size:12px; color:var(--ink-soft);"></p>
+      </div>
+      <div class="x" onclick="closeModal()">×</div>
+    </div>
+    <div class="modal-body">
+      <div class="field" style="margin-bottom:0;">
+        <label for="modal-purpose" data-i18n="modal.purpose_label">What's it for?</label>
+        <textarea id="modal-purpose" data-i18n-placeholder="modal.purpose_ph" placeholder="e.g. Running qPCR validation for the graduate thesis cohort"></textarea>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal()" data-i18n="common.cancel">Cancel</button>
+      <button class="btn btn-primary" id="modal-submit" data-i18n="modal.submit">Submit request</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ MODAL: BOOKING ============ -->
+<div class="modal-overlay" id="booking-modal-overlay">
+  <div class="modal">
+    <div class="modal-head">
+      <div>
+        <h3 data-i18n="bk.modal_title">Book a time slot</h3>
+        <p class="sub mono" id="booking-modal-item-name" style="margin:4px 0 0; font-size:12px; color:var(--ink-soft);"></p>
+      </div>
+      <div class="x" onclick="closeBookingModal()">×</div>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <label for="booking-date" data-i18n="bk.field_date">Date</label>
+        <input type="date" id="booking-date">
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="booking-start" data-i18n="bk.field_start">Start time</label>
+          <input type="time" id="booking-start" value="09:00">
+        </div>
+        <div class="field">
+          <label for="booking-end" data-i18n="bk.field_end">End time</label>
+          <input type="time" id="booking-end" value="10:00">
+        </div>
+      </div>
+      <div class="field" style="margin-bottom:0;">
+        <label for="booking-purpose" data-i18n="modal.purpose_label">What's it for?</label>
+        <textarea id="booking-purpose" data-i18n-placeholder="bk.field_purpose_ph" placeholder="e.g. Running a scheduled batch for the thesis cohort"></textarea>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeBookingModal()" data-i18n="common.cancel">Cancel</button>
+      <button class="btn btn-primary" id="booking-modal-submit" data-i18n="bk.submit">Reserve slot</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ MODAL: ISSUE REPORT ============ -->
+<div class="modal-overlay" id="issue-modal-overlay">
+  <div class="modal">
+    <div class="modal-head">
+      <div>
+        <h3 data-i18n="is.modal_title">Report an issue</h3>
+        <p class="sub mono" id="issue-modal-item-name" style="margin:4px 0 0; font-size:12px; color:var(--ink-soft);"></p>
+      </div>
+      <div class="x" onclick="closeIssueModal()">×</div>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <label data-i18n="is.field_severity">Severity</label>
+        <div class="sev-toggle" id="sev-toggle">
+          <div class="sev-opt active-minor" data-sev="Minor" onclick="selectSeverity(this)" data-i18n="sev.minor">Minor</div>
+          <div class="sev-opt" data-sev="Major" onclick="selectSeverity(this)" data-i18n="sev.major">Major</div>
+          <div class="sev-opt" data-sev="Critical" onclick="selectSeverity(this)" data-i18n="sev.critical">Critical</div>
+        </div>
+      </div>
+      <div class="field" style="margin-bottom:0;">
+        <label for="issue-desc" data-i18n="is.field_desc_label">What's wrong?</label>
+        <textarea id="issue-desc" data-i18n-placeholder="is.field_desc_ph" placeholder="e.g. Display shows an error code and won't power on"></textarea>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeIssueModal()" data-i18n="common.cancel">Cancel</button>
+      <button class="btn btn-primary" id="issue-modal-submit" data-i18n="is.submit">Submit report</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ AI ASSISTANT ============ -->
+<button class="assist-fab" id="assist-fab" onclick="toggleAssistant()" aria-label="Open EquipUse Assistant">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7l9 5 9-5-9-5Z"/><path d="M3 12l9 5 9-5"/><path d="M3 17l9 5 9-5"/></svg>
+</button>
+
+<div class="assist-panel" id="assist-panel">
+  <div class="assist-head">
+    <div>
+      <div class="assist-title mono" data-i18n="asst.title">EquipUse Assistant</div>
+      <div class="assist-sub" data-i18n="asst.sub">Checks the registry before you buy anything new</div>
+    </div>
+    <div class="assist-close" onclick="toggleAssistant()">×</div>
+  </div>
+  <div class="assist-body" id="assist-body"></div>
+  <div class="assist-chips" id="assist-chips"></div>
+  <div class="assist-input-row">
+    <input type="text" id="assist-input" data-i18n-placeholder="asst.placeholder" placeholder="Describe a project or ask what's available…" onkeydown="if(event.key==='Enter') sendAssistantQuery()">
+    <button class="assist-send" onclick="sendAssistantQuery()" aria-label="Send">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7Z"/></svg>
+    </button>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script src="/app.js"></script>
+</body>
+</html>

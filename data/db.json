@@ -1,0 +1,368 @@
+{
+  "equipment": [
+    {
+      "id": "EQ-1000",
+      "name": "Leica DM2500 Compound Microscope",
+      "category": "Microscope",
+      "department": "Biology",
+      "location": "Bio Lab A · Bench 2",
+      "status": "Available",
+      "condition": "Excellent",
+      "idleDays": 2,
+      "value": 1450
+    },
+    {
+      "id": "EQ-1001",
+      "name": "Thermo Heratherm CO2 Incubator",
+      "category": "Incubator",
+      "department": "Biology",
+      "location": "Bio Lab B · Shelf 1",
+      "status": "In Use",
+      "condition": "Good",
+      "idleDays": 0,
+      "value": 3200
+    },
+    {
+      "id": "EQ-1002",
+      "name": "Eppendorf 5430R Centrifuge",
+      "category": "Centrifuge",
+      "department": "Biology",
+      "location": "Bio Lab A · Bench 5",
+      "status": "Available",
+      "condition": "Excellent",
+      "idleDays": 5,
+      "value": 2600
+    },
+    {
+      "id": "EQ-1003",
+      "name": "Sartorius Biostat B Bioreactor",
+      "category": "Bioreactor",
+      "department": "Biology",
+      "location": "Cell Culture Suite",
+      "status": "Maintenance",
+      "condition": "Needs Review",
+      "idleDays": 40,
+      "value": 9800
+    },
+    {
+      "id": "EQ-1004",
+      "name": "BioTek Synergy H1 Plate Reader",
+      "category": "Plate Reader",
+      "department": "Biology",
+      "location": "Bio Lab B · Bench 3",
+      "status": "Available",
+      "condition": "Good",
+      "idleDays": 101,
+      "value": 5400
+    },
+    {
+      "id": "EQ-1005",
+      "name": "Bio-Rad C1000 Touch Thermal Cycler",
+      "category": "Thermal Cycler",
+      "department": "Biology",
+      "location": "Bio Lab A · Bench 3",
+      "status": "Available",
+      "condition": "Excellent",
+      "idleDays": 4,
+      "value": 4200
+    },
+    {
+      "id": "EQ-1006",
+      "name": "Bio-Rad PowerPac HC Gel Electrophoresis System",
+      "category": "Electrophoresis System",
+      "department": "Biology",
+      "location": "Bio Lab A · Bench 4",
+      "status": "Available",
+      "condition": "Good",
+      "idleDays": 6,
+      "value": 1800
+    },
+    {
+      "id": "EQ-1007",
+      "name": "Thermo Revco -80°C Freezer",
+      "category": "Freezer",
+      "department": "Biology",
+      "location": "Cold Storage · Unit 4",
+      "status": "In Use",
+      "condition": "Good",
+      "idleDays": 0,
+      "value": 11000
+    },
+    {
+      "id": "EQ-1008",
+      "name": "Shimadzu GC-2030 Gas Chromatograph",
+      "category": "Chromatograph",
+      "department": "Chemistry",
+      "location": "Chem Lab 1 · Hood 2",
+      "status": "In Use",
+      "condition": "Good",
+      "idleDays": 0,
+      "value": 8700
+    },
+    {
+      "id": "EQ-1009",
+      "name": "Bruker Avance 400 NMR Spectrometer",
+      "category": "NMR Spectrometer",
+      "department": "Chemistry",
+      "location": "NMR Suite",
+      "status": "Available",
+      "condition": "Excellent",
+      "idleDays": 10,
+      "value": 42000
+    },
+    {
+      "id": "EQ-1010",
+      "name": "Mettler Toledo XPR205 Analytical Balance",
+      "category": "Balance",
+      "department": "Chemistry",
+      "location": "Chem Lab 2 · Bench 1",
+      "status": "Available",
+      "condition": "Excellent",
+      "idleDays": 1,
+      "value": 2900
+    },
+    {
+      "id": "EQ-1011",
+      "name": "Buchi Rotavapor R-300",
+      "category": "Rotary Evaporator",
+      "department": "Chemistry",
+      "location": "Chem Lab 1 · Hood 4",
+      "status": "Available",
+      "condition": "Good",
+      "idleDays": 124,
+      "value": 3100
+    },
+    {
+      "id": "EQ-1012",
+      "name": "Thermo NanoDrop One Spectrophotometer",
+      "category": "Spectrophotometer",
+      "department": "Chemistry",
+      "location": "Chem Lab 3 · Bench 1",
+      "status": "Available",
+      "condition": "Excellent",
+      "idleDays": 3,
+      "value": 4600
+    },
+    {
+      "id": "EQ-1013",
+      "name": "Keysight DSOX1204G Oscilloscope",
+      "category": "Oscilloscope",
+      "department": "Physics",
+      "location": "Physics Lab · Bench 4",
+      "status": "Retired",
+      "condition": "Fair",
+      "idleDays": 201,
+      "value": 1200
+    },
+    {
+      "id": "EQ-1014",
+      "name": "Stanford Research SR860 Lock-in Amplifier",
+      "category": "Amplifier",
+      "department": "Physics",
+      "location": "Physics Lab · Bench 1",
+      "status": "Available",
+      "condition": "Excellent",
+      "idleDays": 6,
+      "value": 4300
+    },
+    {
+      "id": "EQ-1015",
+      "name": "Oxford Instruments Cryostat",
+      "category": "Cryostat",
+      "department": "Physics",
+      "location": "Low Temp Lab",
+      "status": "Maintenance",
+      "condition": "Needs Review",
+      "idleDays": 15,
+      "value": 15600
+    },
+    {
+      "id": "EQ-1016",
+      "name": "Newport Optical Table Laser Rig",
+      "category": "Laser Rig",
+      "department": "Physics",
+      "location": "Optics Lab",
+      "status": "In Use",
+      "condition": "Good",
+      "idleDays": 0,
+      "value": 21000
+    },
+    {
+      "id": "EQ-1017",
+      "name": "Instron 5969 Universal Testing Machine",
+      "category": "Testing Machine",
+      "department": "Engineering",
+      "location": "Materials Test Lab",
+      "status": "Available",
+      "condition": "Good",
+      "idleDays": 3,
+      "value": 26000
+    },
+    {
+      "id": "EQ-1018",
+      "name": "FLIR T860 Thermal Camera",
+      "category": "Thermal Camera",
+      "department": "Engineering",
+      "location": "Robotics Lab",
+      "status": "Available",
+      "condition": "Excellent",
+      "idleDays": 8,
+      "value": 6100
+    },
+    {
+      "id": "EQ-1019",
+      "name": "Stratasys F370 3D Printer",
+      "category": "3D Printer",
+      "department": "Engineering",
+      "location": "Fabrication Shop",
+      "status": "In Use",
+      "condition": "Good",
+      "idleDays": 0,
+      "value": 18500
+    },
+    {
+      "id": "EQ-1020",
+      "name": "Fluke 87V Digital Multimeter",
+      "category": "Multimeter",
+      "department": "Engineering",
+      "location": "Electronics Bench",
+      "status": "Available",
+      "condition": "Good",
+      "idleDays": 94,
+      "value": 240
+    },
+    {
+      "id": "EQ-1021",
+      "name": "TA Instruments DSC 25 Calorimeter",
+      "category": "Calorimeter",
+      "department": "Materials Science",
+      "location": "MSE Lab · Bench 2",
+      "status": "Available",
+      "condition": "Good",
+      "idleDays": 61,
+      "value": 7400
+    },
+    {
+      "id": "EQ-1022",
+      "name": "Bruker D8 Advance XRD",
+      "category": "XRD System",
+      "department": "Materials Science",
+      "location": "MSE Lab · Bench 1",
+      "status": "In Use",
+      "condition": "Excellent",
+      "idleDays": 0,
+      "value": 31000
+    },
+    {
+      "id": "EQ-1023",
+      "name": "Anton Paar MCR 302 Rheometer",
+      "category": "Rheometer",
+      "department": "Materials Science",
+      "location": "MSE Lab · Bench 3",
+      "status": "Available",
+      "condition": "Good",
+      "idleDays": 112,
+      "value": 29500
+    }
+  ],
+  "users": [
+    {
+      "id": "u-amal",
+      "username": "amal",
+      "password": "squ2026",
+      "role": "Researcher"
+    },
+    {
+      "id": "u-salim",
+      "username": "salim",
+      "password": "squ2026",
+      "role": "Manager"
+    },
+    {
+      "id": "u-mru89tingniw",
+      "username": "shadha",
+      "password": "1234",
+      "role": "Manager"
+    }
+  ],
+  "requests": [
+    {
+      "id": "RQ-mru83vwmoegx",
+      "equipmentId": "EQ-1003",
+      "equipmentName": "Sartorius Biostat B Bioreactor",
+      "requesterId": "u-amal",
+      "requesterName": "amal",
+      "department": "Biology",
+      "purpose": "Fed-batch fermentation run for the yeast expression project.",
+      "status": "Pending",
+      "createdAt": 1784590736710
+    },
+    {
+      "id": "RQ-mru83w3z1qvg",
+      "equipmentId": "EQ-1011",
+      "equipmentName": "Buchi Rotavapor R-300",
+      "requesterId": "u-amal",
+      "requesterName": "amal",
+      "department": "Chemistry",
+      "purpose": "Solvent removal for a joint synthesis batch.",
+      "status": "Approved",
+      "createdAt": 1784353136710
+    }
+  ],
+  "trend": [
+    {
+      "month": "Feb",
+      "count": 118
+    },
+    {
+      "month": "Mar",
+      "count": 131
+    },
+    {
+      "month": "Apr",
+      "count": 126
+    },
+    {
+      "month": "May",
+      "count": 145
+    },
+    {
+      "month": "Jun",
+      "count": 152
+    },
+    {
+      "month": "Jul",
+      "count": 168
+    }
+  ],
+  "bookings": [
+    {
+      "id": "BK-mru83we74rn1",
+      "equipmentId": "EQ-1009",
+      "equipmentName": "Bruker Avance 400 NMR Spectrometer",
+      "userId": "u-salim",
+      "userName": "salim",
+      "department": "Chemistry",
+      "date": "2026-07-23",
+      "startTime": "10:00",
+      "endTime": "12:00",
+      "purpose": "Structure confirmation run for a synthesis batch.",
+      "status": "Upcoming",
+      "createdAt": 1784605137342
+    }
+  ],
+  "issues": [
+    {
+      "id": "IS-mru83we7vmr3",
+      "equipmentId": "EQ-1015",
+      "equipmentName": "Oxford Instruments Cryostat",
+      "reporterId": "u-salim",
+      "reporterName": "salim",
+      "department": "Physics",
+      "description": "Compressor is cycling louder than usual and not holding target temperature.",
+      "severity": "Major",
+      "status": "Open",
+      "createdAt": 1784540337343
+    }
+  ]
+}
